@@ -18,6 +18,8 @@
 
 }
 
+
+
 html{
     scroll-behavior: smooth;
 }
@@ -85,7 +87,10 @@ header{
 
 }
 
+
+
 .banner button{
+
     font-family: var( --font-action);
     color: #fff;
     /*font-size: 1.2rem;*/
