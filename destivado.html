@@ -1,279 +1,599 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <link rel="apple-touch-icon" sizes="180x180" href="imagens/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="imagens/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="imagens/favicon-16x16.png">
-    <link rel="manifest" href="/site.webmanifest">
-    <title>Front-End</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Geovane Paixão — Desenvolvedor Front-End</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F6F5F0;
+    --paper-raised: #FFFFFF;
+    --ink: #15171B;
+    --muted: #5B6270;
+    --blue: #1C3F94;
+    --blue-soft: #E7ECF7;
+    --line: #C9CDD6;
+    --line-strong: #9AA1AF;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #0E1015;
+      --paper-raised: #16191F;
+      --ink: #EDEFF3;
+      --muted: #8992A3;
+      --blue: #7C9CF0;
+      --blue-soft: #1B2436;
+      --line: #262B35;
+      --line-strong: #3A4150;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #0E1015;
+    --paper-raised: #16191F;
+    --ink: #EDEFF3;
+    --muted: #8992A3;
+    --blue: #7C9CF0;
+    --blue-soft: #1B2436;
+    --line: #262B35;
+    --line-strong: #3A4150;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: calc(72px + env(safe-area-inset-top, 0px)); }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img, svg { max-width: 100%; display: block; }
+  a { color: inherit; }
+  .wrap { width: min(1120px, 100% - 3rem); margin-inline: auto; }
+  ::selection { background: var(--blue); color: var(--paper-raised); }
+  :focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+
+  /* blueprint grid background */
+  .grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 48px 48px;
+    opacity: 0.45;
+    pointer-events: none;
+  }
+
+  /* header */
+  header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 50;
+    padding-top: env(safe-area-inset-top, 0px);
+    background: color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+  .mark {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.02em;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .mark .dot { width: 7px; height: 7px; border: 1.5px solid var(--blue); transform: rotate(45deg); flex: none; }
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+    font-size: 0.85rem;
+  }
+  nav a { text-decoration: none; color: var(--muted); transition: color .15s ease; }
+  nav a:hover, nav a:focus-visible { color: var(--ink); }
+  .nav-toggle { display: none; }
+  @media (max-width: 720px) {
+    nav ul { display: none; }
+  }
+
+  /* hero */
+  .hero {
+    position: relative;
+    padding: calc(64px + env(safe-area-inset-top, 0px) + 4.5rem) 0 5rem;
+    border-bottom: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .hero-inner {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+  @media (max-width: 860px) {
+    .hero-inner { grid-template-columns: 1fr; }
+  }
+  .coord {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--blue);
+    letter-spacing: 0.02em;
+    margin-bottom: 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .coord::before {
+    content: "";
+    width: 16px; height: 1px; background: var(--blue);
+  }
+  h1.name {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: clamp(2.8rem, 7vw, 5.2rem);
+    line-height: 0.98;
+    letter-spacing: -0.01em;
+  }
+  .role {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--muted);
+    font-size: clamp(1.2rem, 2.4vw, 1.6rem);
+    margin-top: 0.6rem;
+  }
+  .hero-lede {
+    max-width: 46ch;
+    margin-top: 1.6rem;
+    color: var(--muted);
+    font-size: 1.02rem;
+  }
+  .hero-cta {
+    margin-top: 2.2rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .btn {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.82rem;
+    text-decoration: none;
+    padding: 0.85rem 1.3rem;
+    border: 1px solid var(--ink);
+    color: var(--ink);
+    transition: background .15s ease, color .15s ease;
+  }
+  .btn.primary { background: var(--ink); color: var(--paper); }
+  .btn.primary:hover { background: var(--blue); border-color: var(--blue); }
+  .btn:not(.primary):hover { background: var(--blue-soft); border-color: var(--blue); color: var(--blue); }
+
+  /* hero diagram */
+  .diagram {
+    position: relative;
+  }
+  .diagram svg { width: 100%; height: auto; }
+  .diagram .draw {
+    stroke-dasharray: 900;
+    stroke-dashoffset: 900;
+    animation: draw 1.8s ease forwards 0.2s;
+  }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  @media (prefers-reduced-motion: reduce) {
+    .diagram .draw { animation: none; stroke-dashoffset: 0; }
+  }
+
+  /* status card */
+  .status-card {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    border: 1px solid var(--line-strong);
+    background: var(--paper-raised);
+    padding: 0.9rem 1rem;
+    display: inline-flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin-top: 2rem;
+    color: var(--muted);
+  }
+  .status-card b { color: var(--ink); font-weight: 500; }
+  .status-card .led { width: 6px; height: 6px; border-radius: 50%; background: #2E9B5C; display: inline-block; margin-right: 0.4rem; box-shadow: 0 0 6px #2E9B5C; }
+
+  /* section shell */
+  section { padding: 5.5rem 0; border-bottom: 1px solid var(--line); position: relative; }
+  section:last-of-type { border-bottom: none; }
+  .section-head {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+  @media (max-width: 720px) {
+    .section-head { grid-template-columns: 1fr; gap: 0.8rem; }
+  }
+  .section-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--blue);
+  }
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: clamp(1.8rem, 3.4vw, 2.6rem);
+    letter-spacing: -0.01em;
+  }
+
+  /* about */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 2rem;
+  }
+  @media (max-width: 720px) { .about-grid { grid-template-columns: 1fr; } }
+  .about-copy p { max-width: 62ch; color: var(--ink); margin-bottom: 1.2rem; }
+  .about-copy p.muted { color: var(--muted); }
+  .about-figures {
+    border-top: 1px solid var(--line);
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    display: flex;
+    gap: 2.5rem;
+    flex-wrap: wrap;
+  }
+  .fig { font-family: 'IBM Plex Mono', monospace; }
+  .fig b { display: block; font-size: 1.6rem; font-family: 'Fraunces', serif; font-weight: 500; }
+  .fig span { font-size: 0.72rem; color: var(--muted); }
+
+  /* arsenal */
+  .arsenal-table { border-top: 1px solid var(--line-strong); }
+  .arsenal-row {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    border-bottom: 1px solid var(--line);
+    padding: 1.1rem 0;
+    gap: 1rem;
+  }
+  @media (max-width: 720px) { .arsenal-row { grid-template-columns: 1fr; gap: 0.4rem; } }
+  .arsenal-row .cat {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+  .chips { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+  .chip {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    border: 1px solid var(--line-strong);
+    padding: 0.35rem 0.7rem;
+    color: var(--ink);
+  }
+
+  /* formação timeline */
+  .timeline { border-left: 1px solid var(--line-strong); margin-left: 6px; }
+  .tl-item { position: relative; padding: 0 0 2.4rem 2rem; }
+  .tl-item:last-child { padding-bottom: 0; }
+  .tl-item::before {
+    content: "";
+    position: absolute;
+    left: -6.5px; top: 4px;
+    width: 11px; height: 11px;
+    background: var(--paper);
+    border: 1.5px solid var(--blue);
+    transform: rotate(45deg);
+  }
+  .tl-when {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--blue);
+    margin-bottom: 0.3rem;
+  }
+  .tl-what { font-family: 'Fraunces', serif; font-size: 1.35rem; font-weight: 500; }
+  .tl-where { color: var(--muted); font-size: 0.92rem; margin-top: 0.15rem; }
+
+  /* projects */
+  .projects { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line-strong); border: 1px solid var(--line-strong); }
+  @media (max-width: 860px) { .projects { grid-template-columns: 1fr; } }
+  .project {
+    background: var(--paper-raised);
+    padding: 2rem 1.7rem;
+    position: relative;
+    text-decoration: none;
+    color: var(--ink);
+    display: flex;
+    flex-direction: column;
+    min-height: 230px;
+  }
+  .project .corner {
+    position: absolute; width: 10px; height: 10px;
+    border-top: 1.5px solid transparent; border-left: 1.5px solid transparent;
+    top: 10px; left: 10px;
+    transition: border-color .15s ease;
+  }
+  .project:hover .corner { border-color: var(--blue); }
+  .project .tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--blue);
+    margin-bottom: 1rem;
+  }
+  .project h3 { font-family: 'Fraunces', serif; font-weight: 500; font-size: 1.3rem; margin-bottom: 0.7rem; }
+  .project p { color: var(--muted); font-size: 0.92rem; flex: 1; }
+  .project .go { font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; margin-top: 1.2rem; color: var(--ink); }
+
+  .stats-strip {
+    margin-top: 1px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border: 1px solid var(--line-strong);
+    border-top: none;
+  }
+  @media (max-width: 720px) { .stats-strip { grid-template-columns: repeat(2, 1fr); } }
+  .stat {
+    padding: 1.4rem 1.5rem;
+    border-left: 1px solid var(--line-strong);
+    background: var(--paper);
+  }
+  .stat:first-child { border-left: none; }
+  .stat b { display: block; font-family: 'Fraunces', serif; font-size: 1.7rem; font-weight: 500; }
+  .stat span { font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: var(--muted); }
+
+  /* off-duty */
+  .offduty { display: flex; flex-wrap: wrap; gap: 0.7rem; }
+  .offduty .chip { border-color: var(--line); color: var(--muted); }
+
+  /* footer/contact */
+  footer { padding: 5rem 0 calc(3rem + env(safe-area-inset-bottom, 0px)); }
+  .contact-head {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    max-width: 16ch;
+    line-height: 1.05;
+    margin-bottom: 2.5rem;
+  }
+  .contact-links {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    border-top: 1px solid var(--line-strong);
+  }
+  @media (max-width: 640px) { .contact-links { grid-template-columns: 1fr; } }
+  .contact-links a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.1rem 0.2rem;
+    border-bottom: 1px solid var(--line);
+    text-decoration: none;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.88rem;
+    color: var(--ink);
+  }
+  .contact-links a:nth-child(odd) { padding-right: 1.5rem; }
+  .contact-links a:hover { color: var(--blue); }
+  .contact-links a .arrow { color: var(--muted); transition: transform .15s ease; }
+  .contact-links a:hover .arrow { transform: translate(3px, -3px); color: var(--blue); }
+  .foot-note {
+    margin-top: 3rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+</style>
 </head>
 <body>
-    <div class="container">
-        <div class="hamburguer">
-            <div class="line" id="line1"></div>
-            <div class="line" id="line2"></div>
-            <div class="line" id="line3"></div>
-            <span>Fechar</span>
-        </div>
-        <header id="home">
-            <div class="img-wrapper">
-                 <img src="imagens/developer_2.jpg" alt="">
-             </div>
-             <div class="banner">
-                 <h1>Web Developer & Front-End Design</h1>
-                     <p>Geovane da Paixão Silva</p>
-                       <a href="https://instagram.com/geovanneps?igshid=ZDdkNTZiNTM="><button>Saiba mais</button></a>
 
+<header>
+  <div class="wrap nav-inner">
+    <div class="mark"><span class="dot"></span> GEOVANE PAIXÃO</div>
+    <nav aria-label="Navegação principal">
+      <ul>
+        <li><a href="#sobre">Sobre</a></li>
+        <li><a href="#arsenal">Arsenal</a></li>
+        <li><a href="#formacao">Formação</a></li>
+        <li><a href="#projetos">Projetos</a></li>
+        <li><a href="#contato">Contato</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
 
-             </div>
-        </header>
-        <aside class="sidebar">
-            <nav>
-                <ul class="menu">
-                    <li class="menu-item"><a href="#" class="menu-link">Home</a></li>
-                    <li class="menu-item"><a href="#conhecimentos" class="menu-link">Conhecimento</a></li>
-                    <li class="menu-item"><a href="#projetos" class="menu-link">Projetos</a></li>
-                    <li class="menu-item"><a href="#contato" class="menu-link">Contato</a></li>
-                    <li class="menu-item"><a href="#orcamento" class="menu-link">Orçamento</a></li>
-                </ul>
-            </nav>
-            <div class="social-media">
-                <a href="#"><i class="fab fa-facebook"></i></a>
-                <a href="#"><i class="fab fa-github-alt"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-            </div>
-        </aside>
-        <section class="sessao-conhecimentos" id="conhecimentos">
-            <div class="sessao-header">
-                <h1>Conhecimentos</h1>
-            </div>
-            <div class="conhecimentos">
-                <div class="conhecimento">
-                    <div class="conhecimento-header">
-                        <i class="fab fa-html5"></i>
-                        <h3>HTML</h3>
-                    </div>
-                    <div class="conhecimento-text">
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                         Quos voluptate fugit totam fuga numquam dignissimos quidem 
-                         itaque quis, rem nulla! Iure itaque eligendi earum tenetur 
-                         autem voluptate dolores incidunt deleniti.</p>
-                    </div>
-                </div>
-                <div class="conhecimento">
-                    <div class="conhecimento-header">
-                        <i class="fab fa-css3-alt"></i>
-                        <h3>CSS</h3>
-                    </div>
-                    <div class="conhecimento-text">
-                        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                             Incidunt consequuntur commodi eaque voluptates, cupiditate
-                              vitae velit consequatur amet laboriosam sit mollitia eum! 
-                              Quisquam modi reprehenderit placeat, dolorum facere rerum.
-                               Dolore.</p>
-                    </div>
-                </div>
-                <div class="conhecimento">
-                    <div class="conhecimento-header">
-                        <i class="fas fa-pencil-alt"></i>
-                        <h3>Design</h3>
-                    </div>
-                    <div class="conhecimento-text">
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                             Nobis iusto doloremque recusandae modi assumenda repellat
-                              explicabo architecto ullam voluptate ab! Suscipit, eos.
-                               Ullam suscipit qui temporibus odio. Consequatur, 
-                               fuga ipsam!</p>
-                    </div>
-                </div>
-                <div class="conhecimento">
-                    <div class="conhecimento-header">
-                        <i class="fab fa-js"></i>
-                        <h3>Javascript</h3>
-                    </div>
-                    <div class="conhecimento-text">
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                             Mollitia amet numquam distinctio dolor, eligendi nemo 
-                             explicabo, hic molestiae vero ab praesentium ex minima 
-                             dicta! Quas corrupti mollitia in ut similique!</p>
-                    </div>
-                </div>
-                <div class="conhecimento">
-                    <div class="conhecimento-header">
-                        <i class="fab fa-bootstrap"></i>
-                        <h3>Booststrap</h3>
-                    </div>
-                    <div class="conhecimento-text">
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                             Culpa voluptates omnis autem nostrum blanditiis veritatis,
-                              quia ab soluta mollitia nemo rem dignissimos animi doloribus
-                               enim nihil officia recusandae facilis repellat.</p>
-                    </div>
-                </div>
-                <div class="conhecimento">
-                    <div class="conhecimento-header">
-                        <i class="fab fa-github"></i>
-                        <h3>Git e Github</h3>
-                    </div>
-                    <div class="conhecimento-text">
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                             Voluptatem ratione temporibus laborum fugit magnam, 
-                             natus nisi sunt atque omnis! Commodi exercitationem optio
-                              distinctio iste esse officia laudantium delectus, iusto
-                               deleniti?</p>
-                    </div>
-                </div>
-                <div class="conhecimentos-img-wrapper">
-                    <img src="imagens/ramdamdam.png" alt="imagem conhecimento">
-                </div>
-            </div>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-        </section>
-
-        <div class="sessao-projetos" id="projetos">
-            <div class="sessao-header">
-                <h1>Projetos</h1>
-            </div>
-            <div class="projetos">
-                <div class="card">
-                    <div class="card-img-wrapper">
-                        <img src="imagens/roxo1.jpg" alt="imagem do projeto ToDo" />
-                    </div>
-                    <div class="card-info">
-                        <h2>ToDo List</h2>
-                        <h3>Javascript</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                            Animi repudiandae deserunt id totam repellendus voluptates,
-                            voluptatum cumque pariatur perferendis sapiente inventore</p>
-                        <button class="btn">Saiba Mais</button>
-                    </div>
-                    </div>
-                    <div class="card">
-                    <div class="card-img-wrapper">
-                        <img src="imagens/proj3.jpg" alt="imagem do projeto Maratona" />
-                    </div>
-                    <div class="card-info">
-                        <h2>Maratona</h2>
-                        <h3>HTML, CSS</h3>
-                        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. 
-                            Voluptatum facilis qui quidem placeat amet architecto delectus 
-                            laboriosam recusandae, quo est iusto vel sequi maxime rerum 
-                            repellat distinctio, natus non iste.</p>
-                        <button class="btn">Saiba Mais</button>
-                    </div>
-                    </div>
-                    <div class="card">
-                    <div class="card-img-wrapper">
-                        <img src="imagens/roxo1.jpg" alt="imagem do projeto Casa Bela" />
-                    </div>
-                    <div class="card-info">
-                        <h2>Casa Bela</h2>
-                        <h3>HTML</h3>
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. 
-                            Repellendus, doloribus culpa sed nemo impedit eligendi,
-                            itaque tempore voluptates veniam reprehenderit vitae
-                            maxime quidem ex deserunt.</p>
-                        <button class="btn">Saiba Mais</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <section class="sessao-contato" id="contato">
-            <div class="contato-wrapper">
-                <div class="contato-left"> </div>
-                <div class="contato-right">
-                    <h1>Contato</h1>
-                    <form>
-                        <div class="input-group">
-                            <input type="text" class="field" id="nome">
-                            <label for="nome" class="field-label">Nome</label>
-                        </div>
-                        <div class="input-group">
-                            <input type="text" class="field" id="email">
-                            <label for="email" class="field-label">E-mail</label>
-                        </div>
-                        <div class="input-group">
-                            <textarea class="field" id="mensagem"></textarea>
-                            <label for="mensagem" class="field-label">Mensagem</label>
-                        </div>
-                        <button type="submit" class="btn btn-submit">Enviar</button>
-                    </form>
-
-                </div>
-            </div>
-        </section>
-        <br>
-        <br>
-        <br>
-        <br>
-        <section class="sessao-orcamento" id="orcamento">
-            <div class="orcamento-wrapper">
-                <h1>Faça um orçamento</h1>
-                <form>
-                    <label for="qtde">Qtde de Páginas</label>
-                    <input type="number" min="1" name="qtde" id="qtde">
-                    <label for="js">Preciso de um scripte JS</label>
-                    <input type="checkbox" name="js" id="js">
-                    <label>Layout</label>
-                    <div class="group-layout">
-                        <div>
-                            <input type="radio" name="layout" id="layout-sim">
-                            <label for="layout-sim">Preciso de um layout</label>
-                        </div>
-                        <div>
-                            <input type="radio" name="layout" id="layout-nao">
-                            <label for="layout-nao">Ja tenho um layout</label>
-                        </div>
-                    </div>
-                    <label for="prazo">Prazo</label>
-                    <input type="range" name="prazo" id="prazo" min="">
-                    <label id="preco">R$ 0,00</label>
-                    <button class="btn btn-orcamento" type="submit">Enviar</button>
-                </form>
-            </div>
-        </section>
-        <footer>
-            <div class="footer-content">
-                <p class="alinhar">
-                    &copy;2022 - TODOS OS DIREITOS RESERVADOS
-                </p>
-                <div class="social-list">
-                    <ul>
-                        <li><a href="https://www.facebook.com/geovane.paixao.102?mibextid=ZbWKwL"><i class="fab fa-facebook-f"></i></a></li>
-                        <li><a href="https://instagram.com/geovanneps?igshid=ZDdkNTZiNTM="><i class="fab fa-instagram"></i></a></li>
-                        <li><a href="https://twitter.com/GeovanePaixao5?t=Dlxctr388q0b30ghzUkL2g&s=09"><i class="fab fa-twiter"></i></a></li>
-                    </ul>
-                  
-                </div>
-            </div>
-            <div class="notification">
-                <p>Bem vindo ao Meu Portfolio</p>
-                <span class="notification_progress"></span>
-            </div>
-        </footer>
-        <a href="#home" id="link-topo">
-            <i class="fas fa-arrow-up"></i>
-        </a>
+<section class="hero" id="topo">
+  <div class="grid-bg" aria-hidden="true"></div>
+  <div class="wrap hero-inner">
+    <div>
+      <div class="coord">2°31'47"S&nbsp;44°18'10"W — SÃO LUÍS, MARANHÃO</div>
+      <h1 class="name">Geovane<br>Paixão</h1>
+      <p class="role">desenvolvedor front-end, em busca de pixel-perfection</p>
+      <p class="hero-lede">Transformo designs em interfaces limpas, intuitivas e bem estruturadas — unindo a lógica da programação com a atenção a detalhe de quem monta o próprio setup peça por peça.</p>
+      <div class="hero-cta">
+        <a class="btn primary" href="#projetos">Ver projetos</a>
+        <a class="btn" href="https://github.com/Geovannehh" target="_blank" rel="noopener">GitHub ↗</a>
+      </div>
+      <div class="status-card">
+        <span><span class="led"></span><b>Status:</b> focando em Front-End (HTML · CSS · JS)</span>
+        <span>Expandindo a base com Python, Java e React</span>
+      </div>
     </div>
-</body>
+    <div class="diagram" aria-hidden="true">
+      <svg viewBox="0 0 420 380" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="40" y="30" width="340" height="220" rx="2" stroke="var(--line-strong)" stroke-width="1.5"/>
+        <rect x="60" y="52" width="300" height="176" rx="1" stroke="var(--line)" stroke-width="1"/>
+        <path class="draw" d="M60 52 L360 52 M60 228 L360 228" stroke="var(--blue)" stroke-width="1.2"/>
+        <path class="draw" d="M90 90 H330 M90 118 H280 M90 146 H310 M90 174 H240" stroke="var(--line-strong)" stroke-width="1.2"/>
+        <circle class="draw" cx="90" cy="90" r="3" fill="var(--blue)"/>
+        <circle class="draw" cx="90" cy="118" r="3" fill="var(--blue)"/>
+        <circle class="draw" cx="90" cy="146" r="3" fill="var(--blue)"/>
+        <circle class="draw" cx="90" cy="174" r="3" fill="var(--blue)"/>
+        <path class="draw" d="M150 250 L150 270 L270 270 L270 250" stroke="var(--line-strong)" stroke-width="1.5"/>
+        <rect x="130" y="272" width="160" height="10" stroke="var(--line-strong)" stroke-width="1.2"/>
+        <text x="40" y="280" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--muted)">FIG. 01 — VIEWPORT</text>
+        <path class="draw" d="M40 320 H380" stroke="var(--line)" stroke-width="1"/>
+        <text x="40" y="342" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--muted)">SCALE 1:1 · HTML / CSS / JS</text>
+        <text x="40" y="360" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--muted)">REV. 2026</text>
+      </svg>
+    </div>
+  </div>
+</section>
 
-    <script src="script.js"></script>
+<section id="sobre">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-label">01 — SOBRE</div>
+      <div class="section-title">Suporte técnico de dia,<br>front-end por convicção</div>
+    </div>
+    <div class="about-grid">
+      <div></div>
+      <div class="about-copy">
+        <p>Atua na área de Tecnologia da Informação na Universidade Ceuma, prestando suporte resolutivo em hardware, software e atendimento — não só para o campus de São Luís, mas para toda a rede nacional do grupo educacional, que inclui unidades no Distrito Federal, Pará, Piauí e Tocantins.</p>
+        <p class="muted">Em paralelo, estuda Engenharia de Software, Análise e Desenvolvimento de Sistemas e Engenharia Mecânica — uma combinação que sustenta o interesse tanto pela lógica de sistemas quanto pela construção física das coisas.</p>
+        <p class="muted">Fora do expediente, o foco é o ecossistema front-end (HTML, CSS e JavaScript), com incursões em Python e Java para entender o sistema como um todo. Nas horas livres: montagem e ajuste do próprio setup, robótica, rock — Guns N' Roses fixo na playlist — e uma boa dose de anime e mangá.</p>
+        <div class="about-figures">
+          <div class="fig"><b>3</b><span>FORMAÇÕES EM ANDAMENTO</span></div>
+          <div class="fig"><b>6</b><span>UNIDADES ATENDIDAS EM REDE</span></div>
+          <div class="fig"><b>2023</b><span>INÍCIO NA ROCKETSEAT</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="arsenal">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-label">02 — ARSENAL</div>
+      <div class="section-title">Stack técnica</div>
+    </div>
+    <div class="arsenal-table">
+      <div class="arsenal-row">
+        <div class="cat">FRONT-END</div>
+        <div class="chips">
+          <span class="chip">HTML</span><span class="chip">CSS</span><span class="chip">JavaScript</span><span class="chip">React</span><span class="chip">Figma</span>
+        </div>
+      </div>
+      <div class="arsenal-row">
+        <div class="cat">LINGUAGENS & BACK-END</div>
+        <div class="chips">
+          <span class="chip">Python</span><span class="chip">Java</span><span class="chip">PHP</span><span class="chip">Node.js</span>
+        </div>
+      </div>
+      <div class="arsenal-row">
+        <div class="cat">MOBILE</div>
+        <div class="chips">
+          <span class="chip">Dart</span><span class="chip">Flutter</span>
+        </div>
+      </div>
+      <div class="arsenal-row">
+        <div class="cat">FERRAMENTAS</div>
+        <div class="chips">
+          <span class="chip">Git</span><span class="chip">Linux</span><span class="chip">VS Code</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="formacao">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-label">03 — FORMAÇÃO</div>
+      <div class="section-title">Linha do tempo acadêmica</div>
+    </div>
+    <div class="about-grid">
+      <div></div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-when">AGO 2023 — DEZ 2026</div>
+          <div class="tl-what">Engenharia de Software</div>
+          <div class="tl-where">UniCesumar</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-when">JAN 2024 — JUN 2026</div>
+          <div class="tl-what">Análise e Desenvolvimento de Sistemas</div>
+          <div class="tl-where">UniCesumar</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-when">JAN 2022 — DEZ 2026</div>
+          <div class="tl-what">Engenharia Mecânica</div>
+          <div class="tl-where">Universidade Ceuma</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projetos">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-label">04 — PROJETOS</div>
+      <div class="section-title">O que está no ar</div>
+    </div>
+    <div class="projects">
+      <a class="project" href="https://github.com/Geovannehh/Geovannehh" target="_blank" rel="noopener">
+        <span class="corner"></span>
+        <span class="tag">EM CONSTRUÇÃO</span>
+        <h3>Perfil GitHub animado</h3>
+        <p>README do perfil com banner estilo terminal, cartões de estatísticas e cobra de contribuições — montado a partir de um master prompt próprio.</p>
+        <span class="go">github.com/Geovannehh ↗</span>
+      </a>
+      <a class="project" href="https://github.com/Geovannehh/Portfolio" target="_blank" rel="noopener">
+        <span class="corner"></span>
+        <span class="tag">2022</span>
+        <h3>Portfolio</h3>
+        <p>Primeira versão do portfólio pessoal — HTML e CSS, o ponto de partida antes desta versão.</p>
+        <span class="go">github.com/Geovannehh/Portfolio ↗</span>
+      </a>
+      <a class="project" href="https://geovannehh.github.io/Web-Developer-Geovane/" target="_blank" rel="noopener">
+        <span class="corner"></span>
+        <span class="tag">SITE</span>
+        <h3>Web-Developer-Geovane</h3>
+        <p>Página publicada com GitHub Pages, usada como portfólio de referência nos perfis do GitHub e da Rocketseat.</p>
+        <span class="go">geovannehh.github.io ↗</span>
+      </a>
+    </div>
+    <div class="stats-strip">
+      <div class="stat"><b>29</b><span>REPOSITÓRIOS</span></div>
+      <div class="stat"><b>27</b><span>SEGUIDORES</span></div>
+      <div class="stat"><b>16</b><span>ESTRELAS RECEBIDAS</span></div>
+      <div class="stat"><b>Pull Shark</b><span>CONQUISTA GITHUB</span></div>
+    </div>
+  </div>
+</section>
+
+<footer id="contato">
+  <div class="wrap">
+    <div class="section-label" style="margin-bottom:1rem;">05 — CONTATO</div>
+    <h2 class="contact-head">Vamos construir algo incrível.</h2>
+    <div class="contact-links">
+      <a href="https://github.com/Geovannehh" target="_blank" rel="noopener"><span>GitHub</span><span class="arrow">↗</span></a>
+      <a href="https://www.linkedin.com/in/geovane-paix%C3%A3o" target="_blank" rel="noopener"><span>LinkedIn</span><span class="arrow">↗</span></a>
+      <a href="https://app.rocketseat.com.br/me/geovane-paixao" target="_blank" rel="noopener"><span>Rocketseat</span><span class="arrow">↗</span></a>
+      <a href="https://www.instagram.com/geovanneps/" target="_blank" rel="noopener"><span>Instagram</span><span class="arrow">↗</span></a>
+      <a href="https://x.com/GeovanePaixao5" target="_blank" rel="noopener"><span>X (Twitter)</span><span class="arrow">↗</span></a>
+      <a href="https://geovannehh.github.io/Web-Developer-Geovane/" target="_blank" rel="noopener"><span>Site anterior</span><span class="arrow">↗</span></a>
+    </div>
+    <div class="foot-note">
+      <span>SÃO LUÍS — MA — BRASIL</span>
+      <span>© 2026 GEOVANE PAIXÃO</span>
+    </div>
+  </div>
+</footer>
+
+</body>
 </html>
