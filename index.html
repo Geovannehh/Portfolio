@@ -4,596 +4,506 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Geovane Paixão — Desenvolvedor Front-End</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --paper: #F6F5F0;
-    --paper-raised: #FFFFFF;
-    --ink: #15171B;
-    --muted: #5B6270;
-    --blue: #1C3F94;
-    --blue-soft: #E7ECF7;
-    --line: #C9CDD6;
-    --line-strong: #9AA1AF;
+    --dark-bg: #000000;
+    --dark-surface: #1D1D1F;
+    --light-bg: #F5F5F7;
+    --light-surface: #FFFFFF;
+    --text-on-light: #1D1D1F;
+    --muted-on-light: #6E6E73;
+    --text-on-dark: #F5F5F7;
+    --muted-on-dark: #86868B;
+    --blue: #0071E3;
+    --blue-hover: #147CE5;
+    --line-on-light: rgba(0,0,0,.12);
+    --line-on-dark: rgba(255,255,255,.14);
     box-sizing: border-box;
     padding-top: env(safe-area-inset-top, 0px);
     padding-bottom: env(safe-area-inset-bottom, 0px);
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --paper: #0E1015;
-      --paper-raised: #16191F;
-      --ink: #EDEFF3;
-      --muted: #8992A3;
-      --blue: #7C9CF0;
-      --blue-soft: #1B2436;
-      --line: #262B35;
-      --line-strong: #3A4150;
+      --light-bg: #1C1C1E;
+      --light-surface: #242426;
+      --text-on-light: #F5F5F7;
+      --muted-on-light: #98989D;
+      --line-on-light: rgba(255,255,255,.12);
     }
   }
   :root[data-theme="dark"] {
-    --paper: #0E1015;
-    --paper-raised: #16191F;
-    --ink: #EDEFF3;
-    --muted: #8992A3;
-    --blue: #7C9CF0;
-    --blue-soft: #1B2436;
-    --line: #262B35;
-    --line-strong: #3A4150;
+    --light-bg: #1C1C1E;
+    --light-surface: #242426;
+    --text-on-light: #F5F5F7;
+    --muted-on-light: #98989D;
+    --line-on-light: rgba(255,255,255,.12);
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; scroll-padding-top: calc(72px + env(safe-area-inset-top, 0px)); }
+  html { scroll-behavior: smooth; scroll-padding-top: calc(52px + env(safe-area-inset-top, 0px)); height: 100%; }
   body {
-    background: var(--paper);
-    color: var(--ink);
-    font-family: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
-    font-size: 16px;
-    line-height: 1.6;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--dark-bg);
+    color: var(--text-on-dark);
+    line-height: 1.47;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
-  img, svg { max-width: 100%; display: block; }
-  a { color: inherit; }
-  .wrap { width: min(1120px, 100% - 3rem); margin-inline: auto; }
-  ::selection { background: var(--blue); color: var(--paper-raised); }
-  :focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+  a { color: inherit; text-decoration: none; }
+  img, svg { display: block; max-width: 100%; }
+  ::selection { background: var(--blue); color: #fff; }
+  :focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; border-radius: 4px; }
+  .wrap { width: min(1080px, 100% - 3rem); margin-inline: auto; }
 
-  /* blueprint grid background */
-  .grid-bg {
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(var(--line) 1px, transparent 1px),
-      linear-gradient(90deg, var(--line) 1px, transparent 1px);
-    background-size: 48px 48px;
-    opacity: 0.45;
-    pointer-events: none;
-  }
-
-  /* header */
   header {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 50;
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     padding-top: env(safe-area-inset-top, 0px);
-    background: color-mix(in srgb, var(--paper) 88%, transparent);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--line);
+    background: rgba(0,0,0,.72);
+    backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid var(--line-on-dark);
   }
-  .nav-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 64px;
-  }
-  .mark {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.8rem;
-    letter-spacing: 0.02em;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  .mark .dot { width: 7px; height: 7px; border: 1.5px solid var(--blue); transform: rotate(45deg); flex: none; }
-  nav ul {
-    list-style: none;
-    display: flex;
-    gap: 2rem;
-    font-size: 0.85rem;
-  }
-  nav a { text-decoration: none; color: var(--muted); transition: color .15s ease; }
-  nav a:hover, nav a:focus-visible { color: var(--ink); }
-  .nav-toggle { display: none; }
-  @media (max-width: 720px) {
-    nav ul { display: none; }
-  }
+  .nav-inner { height: 52px; display: flex; align-items: center; justify-content: space-between; }
+  .brand { font-size: 0.95rem; font-weight: 600; letter-spacing: -0.01em; }
+  nav ul { list-style: none; display: flex; gap: 2.1rem; font-size: 0.8rem; color: #f5f5f7cc; }
+  nav a:hover { color: #fff; }
+  .nav-cta { display: flex; gap: 1.2rem; align-items: center; font-size: 0.8rem; }
+  @media (max-width: 760px) { nav ul { display: none; } }
 
-  /* hero */
   .hero {
     position: relative;
-    padding: calc(64px + env(safe-area-inset-top, 0px) + 4.5rem) 0 5rem;
-    border-bottom: 1px solid var(--line);
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: calc(52px + env(safe-area-inset-top, 0px)) 1.5rem 4rem;
+    background:
+      radial-gradient(60% 50% at 50% 15%, rgba(0,113,227,.35), transparent 70%),
+      radial-gradient(45% 40% at 80% 75%, rgba(140,82,255,.22), transparent 70%),
+      var(--dark-bg);
     overflow: hidden;
   }
-  .hero-inner {
-    position: relative;
-    display: grid;
-    grid-template-columns: 1.3fr 1fr;
-    gap: 3rem;
-    align-items: center;
+  .hero-eyebrow { font-size: 0.95rem; color: #f5f5f7b3; margin-bottom: 0.6rem; }
+  .hero h1 {
+    font-size: clamp(2.8rem, 8vw, 6.4rem);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1.02;
   }
-  @media (max-width: 860px) {
-    .hero-inner { grid-template-columns: 1fr; }
-  }
-  .coord {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.78rem;
-    color: var(--blue);
-    letter-spacing: 0.02em;
-    margin-bottom: 1.5rem;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.6rem;
-  }
-  .coord::before {
-    content: "";
-    width: 16px; height: 1px; background: var(--blue);
-  }
-  h1.name {
-    font-family: 'Fraunces', serif;
-    font-weight: 500;
-    font-size: clamp(2.8rem, 7vw, 5.2rem);
-    line-height: 0.98;
-    letter-spacing: -0.01em;
-  }
-  .role {
-    font-family: 'Fraunces', serif;
-    font-style: italic;
+  .hero .sub {
+    margin-top: 1.1rem;
+    font-size: clamp(1.15rem, 2.4vw, 1.6rem);
+    color: #f5f5f7cc;
     font-weight: 400;
-    color: var(--muted);
-    font-size: clamp(1.2rem, 2.4vw, 1.6rem);
-    margin-top: 0.6rem;
+    max-width: 42ch;
   }
-  .hero-lede {
-    max-width: 46ch;
-    margin-top: 1.6rem;
-    color: var(--muted);
-    font-size: 1.02rem;
+  .hero-cta { margin-top: 2.3rem; display: flex; gap: 1.6rem; align-items: center; flex-wrap: wrap; justify-content: center; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    background: var(--blue); color: #fff;
+    font-size: 0.95rem; font-weight: 400;
+    padding: 0.72rem 1.5rem; border-radius: 980px;
+    transition: background .15s ease;
   }
-  .hero-cta {
-    margin-top: 2.2rem;
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-  .btn {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.82rem;
-    text-decoration: none;
-    padding: 0.85rem 1.3rem;
-    border: 1px solid var(--ink);
-    color: var(--ink);
-    transition: background .15s ease, color .15s ease;
-  }
-  .btn.primary { background: var(--ink); color: var(--paper); }
-  .btn.primary:hover { background: var(--blue); border-color: var(--blue); }
-  .btn:not(.primary):hover { background: var(--blue-soft); border-color: var(--blue); color: var(--blue); }
+  .pill:hover { background: var(--blue-hover); }
+  .link-more { font-size: 0.98rem; color: var(--blue); display: inline-flex; align-items: center; gap: 0.3rem; }
+  .link-more:hover { text-decoration: underline; }
+  .link-more .chev { transition: transform .15s ease; }
+  .link-more:hover .chev { transform: translateX(3px); }
 
-  /* hero diagram */
-  .diagram {
-    position: relative;
+  .mock {
+    margin-top: 4rem;
+    width: min(720px, 100%);
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,.12);
+    background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+    backdrop-filter: blur(6px);
+    overflow: hidden;
+    box-shadow: 0 40px 100px -20px rgba(0,113,227,.35);
   }
-  .diagram svg { width: 100%; height: auto; }
-  .diagram .draw {
-    stroke-dasharray: 900;
-    stroke-dashoffset: 900;
-    animation: draw 1.8s ease forwards 0.2s;
-  }
-  @keyframes draw { to { stroke-dashoffset: 0; } }
+  .mock-bar { display: flex; gap: 6px; padding: 0.8rem 1rem; border-bottom: 1px solid rgba(255,255,255,.1); }
+  .mock-bar span { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,.25); }
+  .mock-body { padding: 1.6rem; display: grid; grid-template-columns: 1fr 2.4fr; gap: 1rem; }
+  .mock-side { display: flex; flex-direction: column; gap: 0.5rem; }
+  .mock-side i { display: block; height: 9px; border-radius: 5px; background: rgba(255,255,255,.12); }
+  .mock-side i:nth-child(1) { width: 70%; }
+  .mock-side i:nth-child(2) { width: 50%; }
+  .mock-side i:nth-child(3) { width: 60%; }
+  .mock-main { display: flex; flex-direction: column; gap: 0.6rem; }
+  .mock-main .row { display: flex; gap: 0.6rem; }
+  .mock-main .block { flex: 1; border-radius: 10px; height: 46px; }
+  .b1 { background: linear-gradient(135deg,#0071E3,#5AC8FA); }
+  .b2 { background: linear-gradient(135deg,#8C52FF,#0071E3); }
+  .b3 { background: linear-gradient(135deg,#34C759,#0071E3); }
+  .mock-main .line { height: 8px; border-radius: 5px; background: rgba(255,255,255,.1); }
+  .mock-main .line.w60 { width: 60%; } .mock-main .line.w80 { width: 80%; } .mock-main .line.w40 { width: 40%; }
+
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.in { opacity: 1; transform: none; }
   @media (prefers-reduced-motion: reduce) {
-    .diagram .draw { animation: none; stroke-dashoffset: 0; }
+    .reveal { opacity: 1; transform: none; transition: none; }
   }
 
-  /* status card */
-  .status-card {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.72rem;
-    border: 1px solid var(--line-strong);
-    background: var(--paper-raised);
-    padding: 0.9rem 1rem;
-    display: inline-flex;
-    flex-direction: column;
-    gap: 0.35rem;
-    margin-top: 2rem;
-    color: var(--muted);
-  }
-  .status-card b { color: var(--ink); font-weight: 500; }
-  .status-card .led { width: 6px; height: 6px; border-radius: 50%; background: #2E9B5C; display: inline-block; margin-right: 0.4rem; box-shadow: 0 0 6px #2E9B5C; }
+  section { padding: 6.5rem 0; }
+  .light { background: var(--light-bg); color: var(--text-on-light); }
+  .dark-sec { background: var(--dark-surface); color: var(--text-on-dark); }
+  .head-block { text-align: center; max-width: 680px; margin: 0 auto 3.5rem; }
+  .kicker { font-size: 0.95rem; color: var(--blue); font-weight: 600; margin-bottom: 0.6rem; }
+  .head-block h2 { font-size: clamp(2rem, 4.6vw, 3.4rem); font-weight: 600; letter-spacing: -0.02em; line-height: 1.06; }
+  .head-block p { margin-top: 1rem; font-size: 1.15rem; color: var(--muted-on-light); }
+  .dark-sec .head-block p { color: var(--muted-on-dark); }
 
-  /* section shell */
-  section { padding: 5.5rem 0; border-bottom: 1px solid var(--line); position: relative; }
-  section:last-of-type { border-bottom: none; }
-  .section-head {
-    display: grid;
-    grid-template-columns: 220px 1fr;
-    gap: 2rem;
-    margin-bottom: 3rem;
+  .stack-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.1rem; }
+  @media (max-width: 900px) { .stack-grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 620px) { .stack-grid { grid-template-columns: repeat(2, 1fr); } }
+  .chip-card {
+    background: var(--light-surface);
+    border-radius: 20px;
+    padding: 1.6rem 1.2rem;
+    display: flex; flex-direction: column; align-items: center; gap: 0.8rem;
+    box-shadow: 0 1px 0 var(--line-on-light);
+    transition: transform .2s ease, box-shadow .2s ease;
   }
-  @media (max-width: 720px) {
-    .section-head { grid-template-columns: 1fr; gap: 0.8rem; }
-  }
-  .section-label {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.78rem;
-    color: var(--blue);
-  }
-  .section-title {
-    font-family: 'Fraunces', serif;
-    font-weight: 500;
-    font-size: clamp(1.8rem, 3.4vw, 2.6rem);
-    letter-spacing: -0.01em;
-  }
+  .chip-card:hover { transform: translateY(-4px); box-shadow: 0 18px 30px -14px rgba(0,0,0,.22); }
+  .chip-card .icon-tile { width: 56px; height: 56px; border-radius: 16px; display: flex; align-items: center; justify-content: center; }
+  .chip-card span { font-size: 0.85rem; font-weight: 600; letter-spacing: -0.01em; }
 
-  /* about */
-  .about-grid {
-    display: grid;
-    grid-template-columns: 220px 1fr;
-    gap: 2rem;
-  }
-  @media (max-width: 720px) { .about-grid { grid-template-columns: 1fr; } }
-  .about-copy p { max-width: 62ch; color: var(--ink); margin-bottom: 1.2rem; }
-  .about-copy p.muted { color: var(--muted); }
-  .about-figures {
-    border-top: 1px solid var(--line);
-    margin-top: 2rem;
-    padding-top: 1.5rem;
-    display: flex;
-    gap: 2.5rem;
-    flex-wrap: wrap;
-  }
-  .fig { font-family: 'IBM Plex Mono', monospace; }
-  .fig b { display: block; font-size: 1.6rem; font-family: 'Fraunces', serif; font-weight: 500; }
-  .fig span { font-size: 0.72rem; color: var(--muted); }
-
-  /* arsenal */
-  .arsenal-table { border-top: 1px solid var(--line-strong); }
-  .arsenal-row {
-    display: grid;
-    grid-template-columns: 220px 1fr;
-    border-bottom: 1px solid var(--line);
-    padding: 1.1rem 0;
-    gap: 1rem;
-  }
-  @media (max-width: 720px) { .arsenal-row { grid-template-columns: 1fr; gap: 0.4rem; } }
-  .arsenal-row .cat {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.8rem;
-    color: var(--muted);
-  }
-  .chips { display: flex; flex-wrap: wrap; gap: 0.6rem; }
-  .chip {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.78rem;
-    border: 1px solid var(--line-strong);
-    padding: 0.35rem 0.7rem;
-    color: var(--ink);
-  }
-
-  /* formação timeline */
-  .timeline { border-left: 1px solid var(--line-strong); margin-left: 6px; }
-  .tl-item { position: relative; padding: 0 0 2.4rem 2rem; }
-  .tl-item:last-child { padding-bottom: 0; }
-  .tl-item::before {
-    content: "";
-    position: absolute;
-    left: -6.5px; top: 4px;
-    width: 11px; height: 11px;
-    background: var(--paper);
-    border: 1.5px solid var(--blue);
-    transform: rotate(45deg);
-  }
-  .tl-when {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--blue);
-    margin-bottom: 0.3rem;
-  }
-  .tl-what { font-family: 'Fraunces', serif; font-size: 1.35rem; font-weight: 500; }
-  .tl-where { color: var(--muted); font-size: 0.92rem; margin-top: 0.15rem; }
-
-  /* projects */
-  .projects { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line-strong); border: 1px solid var(--line-strong); }
-  @media (max-width: 860px) { .projects { grid-template-columns: 1fr; } }
-  .project {
-    background: var(--paper-raised);
-    padding: 2rem 1.7rem;
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; align-items: center; }
+  @media (max-width: 860px) { .split { grid-template-columns: 1fr; } }
+  .split h2 { font-size: clamp(1.9rem, 4vw, 2.9rem); font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 1.3rem; }
+  .split p { color: var(--muted-on-dark); font-size: 1.08rem; max-width: 46ch; margin-bottom: 1rem; }
+  .stat-row { display: flex; gap: 2.4rem; margin-top: 2rem; flex-wrap: wrap; }
+  .stat-row .n { font-size: 2.1rem; font-weight: 600; }
+  .stat-row .l { font-size: 0.85rem; color: var(--muted-on-dark); }
+  .about-panel {
+    border-radius: 24px;
+    aspect-ratio: 4/3.2;
+    background:
+      radial-gradient(120% 100% at 100% 0%, rgba(140,82,255,.35), transparent 60%),
+      radial-gradient(100% 100% at 0% 100%, rgba(0,113,227,.4), transparent 55%),
+      #101013;
+    border: 1px solid rgba(255,255,255,.08);
     position: relative;
-    text-decoration: none;
-    color: var(--ink);
-    display: flex;
-    flex-direction: column;
+    overflow: hidden;
+    padding: 1.6rem;
+    display: flex; flex-direction: column; justify-content: flex-end;
+  }
+  .about-panel .tag { font-size: 0.78rem; color: #f5f5f7b3; font-family: ui-monospace, monospace; }
+  .about-panel .role { font-size: 1.2rem; font-weight: 600; margin-top: 0.3rem; }
+
+  .edu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
+  @media (max-width: 860px) { .edu-grid { grid-template-columns: 1fr; } }
+  .edu-card {
+    background: var(--light-surface);
+    border-radius: 22px;
+    padding: 2rem 1.7rem;
+    box-shadow: 0 1px 0 var(--line-on-light);
+  }
+  .edu-card .when { font-size: 0.82rem; color: var(--blue); font-weight: 600; margin-bottom: 0.9rem; }
+  .edu-card h3 { font-size: 1.3rem; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 0.4rem; }
+  .edu-card p { color: var(--muted-on-light); font-size: 0.95rem; }
+
+  .proj-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1rem; }
+  @media (max-width: 900px) { .proj-grid { grid-template-columns: 1fr; } }
+  .proj-card {
+    background: linear-gradient(160deg, #242426, #151517);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 22px;
+    padding: 2rem 1.7rem;
     min-height: 230px;
+    display: flex; flex-direction: column;
+    transition: transform .2s ease, border-color .2s ease;
   }
-  .project .corner {
-    position: absolute; width: 10px; height: 10px;
-    border-top: 1.5px solid transparent; border-left: 1.5px solid transparent;
-    top: 10px; left: 10px;
-    transition: border-color .15s ease;
-  }
-  .project:hover .corner { border-color: var(--blue); }
-  .project .tag {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--blue);
-    margin-bottom: 1rem;
-  }
-  .project h3 { font-family: 'Fraunces', serif; font-weight: 500; font-size: 1.3rem; margin-bottom: 0.7rem; }
-  .project p { color: var(--muted); font-size: 0.92rem; flex: 1; }
-  .project .go { font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; margin-top: 1.2rem; color: var(--ink); }
+  .proj-card:hover { transform: translateY(-4px); border-color: rgba(0,113,227,.5); }
+  .proj-card .tag { font-size: 0.75rem; color: var(--blue); font-weight: 600; margin-bottom: 0.9rem; }
+  .proj-card h3 { font-size: 1.3rem; font-weight: 600; margin-bottom: 0.6rem; }
+  .proj-card p { color: var(--muted-on-dark); font-size: 0.94rem; flex: 1; }
+  .proj-card .go { margin-top: 1.3rem; }
 
-  .stats-strip {
-    margin-top: 1px;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    border: 1px solid var(--line-strong);
-    border-top: none;
-  }
-  @media (max-width: 720px) { .stats-strip { grid-template-columns: repeat(2, 1fr); } }
-  .stat {
-    padding: 1.4rem 1.5rem;
-    border-left: 1px solid var(--line-strong);
-    background: var(--paper);
-  }
-  .stat:first-child { border-left: none; }
-  .stat b { display: block; font-family: 'Fraunces', serif; font-size: 1.7rem; font-weight: 500; }
-  .stat span { font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: var(--muted); }
+  .num-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; text-align: center; }
+  @media (max-width: 720px) { .num-grid { grid-template-columns: repeat(2, 1fr); } }
+  .num-grid .n { font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 600; letter-spacing: -0.02em; }
+  .num-grid .l { font-size: 0.9rem; color: var(--muted-on-light); margin-top: 0.4rem; }
 
-  /* off-duty */
-  .offduty { display: flex; flex-wrap: wrap; gap: 0.7rem; }
-  .offduty .chip { border-color: var(--line); color: var(--muted); }
-
-  /* footer/contact */
-  footer { padding: 5rem 0 calc(3rem + env(safe-area-inset-bottom, 0px)); }
-  .contact-head {
-    font-family: 'Fraunces', serif;
-    font-weight: 500;
-    font-size: clamp(2rem, 5vw, 3.4rem);
-    max-width: 16ch;
-    line-height: 1.05;
-    margin-bottom: 2.5rem;
-  }
-  .contact-links {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    border-top: 1px solid var(--line-strong);
-  }
-  @media (max-width: 640px) { .contact-links { grid-template-columns: 1fr; } }
-  .contact-links a {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.1rem 0.2rem;
-    border-bottom: 1px solid var(--line);
-    text-decoration: none;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.88rem;
-    color: var(--ink);
-  }
-  .contact-links a:nth-child(odd) { padding-right: 1.5rem; }
-  .contact-links a:hover { color: var(--blue); }
-  .contact-links a .arrow { color: var(--muted); transition: transform .15s ease; }
-  .contact-links a:hover .arrow { transform: translate(3px, -3px); color: var(--blue); }
-  .foot-note {
-    margin-top: 3rem;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.72rem;
-    color: var(--muted);
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
+  footer { background: var(--dark-bg); color: var(--muted-on-dark); padding: 3.5rem 0 calc(2.5rem + env(safe-area-inset-bottom, 0px)); font-size: 0.8rem; }
+  .foot-top { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 2rem; border-bottom: 1px solid var(--line-on-dark); padding-bottom: 2rem; margin-bottom: 1.5rem; }
+  .foot-links { display: flex; gap: 1.6rem; flex-wrap: wrap; }
+  .foot-links a:hover { color: #fff; text-decoration: underline; }
+  .foot-bottom { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.6rem; }
 </style>
 </head>
 <body>
 
 <header>
   <div class="wrap nav-inner">
-    <div class="mark"><span class="dot"></span> GEOVANE PAIXÃO</div>
+    <div class="brand">Geovane Paixão</div>
     <nav aria-label="Navegação principal">
       <ul>
+        <li><a href="#stack">Stack</a></li>
         <li><a href="#sobre">Sobre</a></li>
-        <li><a href="#arsenal">Arsenal</a></li>
         <li><a href="#formacao">Formação</a></li>
         <li><a href="#projetos">Projetos</a></li>
         <li><a href="#contato">Contato</a></li>
       </ul>
     </nav>
+    <div class="nav-cta"><a class="link-more" href="https://github.com/Geovannehh" target="_blank" rel="noopener">GitHub</a></div>
   </div>
 </header>
 
-<section class="hero" id="topo">
-  <div class="grid-bg" aria-hidden="true"></div>
-  <div class="wrap hero-inner">
-    <div>
-      <div class="coord">2°31'47"S&nbsp;44°18'10"W — SÃO LUÍS, MARANHÃO</div>
-      <h1 class="name">Geovane<br>Paixão</h1>
-      <p class="role">desenvolvedor front-end, em busca de pixel-perfection</p>
-      <p class="hero-lede">Transformo designs em interfaces limpas, intuitivas e bem estruturadas — unindo a lógica da programação com a atenção a detalhe de quem monta o próprio setup peça por peça.</p>
-      <div class="hero-cta">
-        <a class="btn primary" href="#projetos">Ver projetos</a>
-        <a class="btn" href="https://github.com/Geovannehh" target="_blank" rel="noopener">GitHub ↗</a>
-      </div>
-      <div class="status-card">
-        <span><span class="led"></span><b>Status:</b> focando em Front-End (HTML · CSS · JS)</span>
-        <span>Expandindo a base com Python, Java e React</span>
-      </div>
-    </div>
-    <div class="diagram" aria-hidden="true">
-      <svg viewBox="0 0 420 380" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="40" y="30" width="340" height="220" rx="2" stroke="var(--line-strong)" stroke-width="1.5"/>
-        <rect x="60" y="52" width="300" height="176" rx="1" stroke="var(--line)" stroke-width="1"/>
-        <path class="draw" d="M60 52 L360 52 M60 228 L360 228" stroke="var(--blue)" stroke-width="1.2"/>
-        <path class="draw" d="M90 90 H330 M90 118 H280 M90 146 H310 M90 174 H240" stroke="var(--line-strong)" stroke-width="1.2"/>
-        <circle class="draw" cx="90" cy="90" r="3" fill="var(--blue)"/>
-        <circle class="draw" cx="90" cy="118" r="3" fill="var(--blue)"/>
-        <circle class="draw" cx="90" cy="146" r="3" fill="var(--blue)"/>
-        <circle class="draw" cx="90" cy="174" r="3" fill="var(--blue)"/>
-        <path class="draw" d="M150 250 L150 270 L270 270 L270 250" stroke="var(--line-strong)" stroke-width="1.5"/>
-        <rect x="130" y="272" width="160" height="10" stroke="var(--line-strong)" stroke-width="1.2"/>
-        <text x="40" y="280" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--muted)">FIG. 01 — VIEWPORT</text>
-        <path class="draw" d="M40 320 H380" stroke="var(--line)" stroke-width="1"/>
-        <text x="40" y="342" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--muted)">SCALE 1:1 · HTML / CSS / JS</text>
-        <text x="40" y="360" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--muted)">REV. 2026</text>
-      </svg>
-    </div>
+<section class="hero">
+  <div class="hero-eyebrow">Portfólio</div>
+  <h1>Geovane Paixão.</h1>
+  <p class="sub">Desenvolvedor front-end em São Luís, transformando design em interface — com a mesma precisão de quem monta o próprio setup peça por peça.</p>
+  <div class="hero-cta">
+    <a class="pill" href="#projetos">Ver projetos</a>
+    <a class="link-more" href="#contato">Fale comigo <span class="chev">›</span></a>
   </div>
-</section>
-
-<section id="sobre">
-  <div class="wrap">
-    <div class="section-head">
-      <div class="section-label">01 — SOBRE</div>
-      <div class="section-title">Suporte técnico de dia,<br>front-end por convicção</div>
-    </div>
-    <div class="about-grid">
-      <div></div>
-      <div class="about-copy">
-        <p>Atua na área de Tecnologia da Informação na Universidade Ceuma, prestando suporte resolutivo em hardware, software e atendimento — não só para o campus de São Luís, mas para toda a rede nacional do grupo educacional, que inclui unidades no Distrito Federal, Pará, Piauí e Tocantins.</p>
-        <p class="muted">Em paralelo, estuda Engenharia de Software, Análise e Desenvolvimento de Sistemas e Engenharia Mecânica — uma combinação que sustenta o interesse tanto pela lógica de sistemas quanto pela construção física das coisas.</p>
-        <p class="muted">Fora do expediente, o foco é o ecossistema front-end (HTML, CSS e JavaScript), com incursões em Python e Java para entender o sistema como um todo. Nas horas livres: montagem e ajuste do próprio setup, robótica, rock — Guns N' Roses fixo na playlist — e uma boa dose de anime e mangá.</p>
-        <div class="about-figures">
-          <div class="fig"><b>3</b><span>FORMAÇÕES EM ANDAMENTO</span></div>
-          <div class="fig"><b>6</b><span>UNIDADES ATENDIDAS EM REDE</span></div>
-          <div class="fig"><b>2023</b><span>INÍCIO NA ROCKETSEAT</span></div>
-        </div>
+  <div class="mock reveal" aria-hidden="true">
+    <div class="mock-bar"><span></span><span></span><span></span></div>
+    <div class="mock-body">
+      <div class="mock-side"><i></i><i></i><i></i></div>
+      <div class="mock-main">
+        <div class="row"><div class="block b1"></div><div class="block b2"></div><div class="block b3"></div></div>
+        <div class="line w80"></div>
+        <div class="line w60"></div>
+        <div class="line w40"></div>
       </div>
     </div>
   </div>
 </section>
 
-<section id="arsenal">
+<section class="light" id="stack">
   <div class="wrap">
-    <div class="section-head">
-      <div class="section-label">02 — ARSENAL</div>
-      <div class="section-title">Stack técnica</div>
+    <div class="head-block reveal">
+      <div class="kicker">Stack</div>
+      <h2>Feito com as ferramentas certas.</h2>
+      <p>Do front-end ao mobile, a caixa de ferramentas usada no dia a dia — e nos estudos.</p>
     </div>
-    <div class="arsenal-table">
-      <div class="arsenal-row">
-        <div class="cat">FRONT-END</div>
-        <div class="chips">
-          <span class="chip">HTML</span><span class="chip">CSS</span><span class="chip">JavaScript</span><span class="chip">React</span><span class="chip">Figma</span>
+    <div class="stack-grid">
+
+      <div class="chip-card reveal">
+        <div class="icon-tile" style="background:linear-gradient(135deg,#E44D26,#F16529)">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M6 4h5M6 10h6M9 4v16" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <span>HTML</span>
+      </div>
+
+      <div class="chip-card reveal">
+        <div class="icon-tile" style="background:linear-gradient(135deg,#1572B6,#33A9DC)">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M5 5h14M6 5l2 14M18 5l-2 14" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <span>CSS</span>
+      </div>
+
+      <div class="chip-card reveal">
+        <div class="icon-tile" style="background:linear-gradient(135deg,#F0DB4F,#F7E463)">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M8 4c-2 0-2 2-3 2s-1-1-1-1 0 2 2 2-2 0-2 2 1 1 1 1 1-2 3-2M16 4c2 0 2 2 3 2s1-1 1-1 0 2-2 2 2 0 2 2-1 1-1 1-1-2-3-2" stroke="#1D1D1F" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </div>
+        <span>JavaScript</span>
+      </div>
+
+      <div class="chip-card reveal">
+        <div class="icon-tile" style="background:linear-gradient(135deg,#0d1b2a,#1b3a5c)">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="12" rx="9" ry="3.6" stroke="#61DAFB" stroke-width="1.5"/><ellipse cx="12" cy="12" rx="9" ry="3.6" stroke="#61DAFB" stroke-width="1.5" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="9" ry="3.6" stroke="#61DAFB" stroke-width="1.5" transform="rotate(120 12 12)"/><circle cx="12" cy="12" r="1.8" fill="#61DAFB"/></svg>
+        </div>
+        <span>React</span>
+      </div>
+
+      <div class="chip-card reveal">
+        <div class="icon-tile" style="background:linear-gradient(135deg,#306998,#FFD43B)">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 3c-3 0-3 2-3 2v3h6v1H6s-3 0-3 5 3 5 3 5h2v-3s0-2 2-2h4s3 0 3-3V6s0-3-5-3zm-1.2 2.2a1 1 0 110 2 1 1 0 010-2z" fill="#fff"/><path d="M12 21c3 0 3-2 3-2v-3H9v-1h9s3 0 3-5-3-5-3-5h-2v3s0 2-2 2H10s-3 0-3 3v3s0 3 5 3zm1.2-2.2a1 1 0 110-2 1 1 0 010 2z" fill="#fff" opacity=".7"/></svg>
+        </div>
+        <span>Python</span>
+      </div>
+
+      <div class="chip-card reveal">
+        <div class="icon-tile" style="background:linear-gradient(135deg,#5382A1,#EA2D2E)">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M8 15c-2 1-2 2 0 3s6 1 8 0 2-2 0-3M9 3c-1 2 3 3 2 5-1 1-2 2 0 3M12 9c3 1 3 3 0 4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <span>Java</span>
+      </div>
+
+      <div class="chip-card reveal">
+        <div class="icon-tile" style="background:linear-gradient(135deg,#777BB4,#8892BF)">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="12" rx="9" ry="5" stroke="#fff" stroke-width="1.6"/><path d="M9 10.2h1.3c1 0 1.4.5 1.2 1.4s-.7 1.4-1.7 1.4H8.8L9 10.2z" stroke="#fff" stroke-width="1.2"/></svg>
+        </div>
+        <span>PHP</span>
+      </div>
+
+      <div class="chip-card reveal">
+        <div class="icon-tile" style="background:linear-gradient(135deg,#3C873A,#68A063)">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 3l7.8 4.5v9L12 21l-7.8-4.5v-9L12 3z" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 8v8M9 9.8l6 4.4M15 9.8l-6 4.4" stroke="#fff" stroke-width="1.1"/></svg>
+        </div>
+        <span>Node.js</span>
+      </div>
+
+      <div class="chip-card reveal">
+        <div class="icon-tile" style="background:linear-gradient(135deg,#0175C2,#13B9FD)">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M4 15L13 4h5l-9 11H4z" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 15h9l-4 5H5l4-5z" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        </div>
+        <span>Dart</span>
+      </div>
+
+      <div class="chip-card reveal">
+        <div class="icon-tile" style="background:linear-gradient(135deg,#027DFD,#02569B)">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M5 13L14 4h5L9 17H5z" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 17l5 5h5l-6-6" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        </div>
+        <span>Flutter</span>
+      </div>
+
+      <div class="chip-card reveal">
+        <div class="icon-tile" style="background:linear-gradient(135deg,#F05032,#F34F29)">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="7" cy="6" r="2" stroke="#fff" stroke-width="1.6"/><circle cx="7" cy="18" r="2" stroke="#fff" stroke-width="1.6"/><circle cx="17" cy="12" r="2" stroke="#fff" stroke-width="1.6"/><path d="M7 8v8M9 6h4a4 4 0 014 4v0" stroke="#fff" stroke-width="1.6"/></svg>
+        </div>
+        <span>Git</span>
+      </div>
+
+      <div class="chip-card reveal">
+        <div class="icon-tile" style="background:linear-gradient(135deg,#1D1D1F,#3A3A3C)">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="3" stroke="#F5F5F7" stroke-width="1.6"/><path d="M8 9h.01M8 14.5c1.3 1 2.7 1 4 0M14 9h.01" stroke="#F5F5F7" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+        <span>Linux</span>
+      </div>
+
+      <div class="chip-card reveal">
+        <div class="icon-tile" style="background:linear-gradient(135deg,#A259FF,#F24E1E)">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="7" r="3" stroke="#fff" stroke-width="1.4"/><circle cx="15" cy="12" r="3" stroke="#fff" stroke-width="1.4"/><circle cx="9" cy="17" r="3" stroke="#fff" stroke-width="1.4"/></svg>
+        </div>
+        <span>Figma</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="dark-sec" id="sobre">
+  <div class="wrap">
+    <div class="split">
+      <div class="reveal">
+        <div class="about-panel">
+          <div class="tag">STATUS</div>
+          <div class="role">Focando em Front-End</div>
         </div>
       </div>
-      <div class="arsenal-row">
-        <div class="cat">LINGUAGENS & BACK-END</div>
-        <div class="chips">
-          <span class="chip">Python</span><span class="chip">Java</span><span class="chip">PHP</span><span class="chip">Node.js</span>
-        </div>
-      </div>
-      <div class="arsenal-row">
-        <div class="cat">MOBILE</div>
-        <div class="chips">
-          <span class="chip">Dart</span><span class="chip">Flutter</span>
-        </div>
-      </div>
-      <div class="arsenal-row">
-        <div class="cat">FERRAMENTAS</div>
-        <div class="chips">
-          <span class="chip">Git</span><span class="chip">Linux</span><span class="chip">VS Code</span>
+      <div class="reveal">
+        <h2>Suporte técnico de dia. Front-end por convicção.</h2>
+        <p>Atua na área de Tecnologia da Informação na Universidade Ceuma, dando suporte resolutivo em hardware e software — não só em São Luís, mas para toda a rede nacional do grupo educacional, com unidades no Distrito Federal, Pará, Piauí e Tocantins.</p>
+        <p>Em paralelo, estuda Engenharia de Software, Análise e Desenvolvimento de Sistemas e Engenharia Mecânica. Fora do expediente: montagem do próprio setup, robótica, rock (Guns N' Roses fixo na playlist) e uma boa dose de anime.</p>
+        <div class="stat-row">
+          <div><div class="n">3</div><div class="l">Formações em andamento</div></div>
+          <div><div class="n">6</div><div class="l">Unidades atendidas em rede</div></div>
+          <div><div class="n">2023</div><div class="l">Início na Rocketseat</div></div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<section id="formacao">
+<section class="light" id="formacao">
   <div class="wrap">
-    <div class="section-head">
-      <div class="section-label">03 — FORMAÇÃO</div>
-      <div class="section-title">Linha do tempo acadêmica</div>
+    <div class="head-block reveal">
+      <div class="kicker">Formação</div>
+      <h2>Três formações, um mesmo fio.</h2>
     </div>
-    <div class="about-grid">
-      <div></div>
-      <div class="timeline">
-        <div class="tl-item">
-          <div class="tl-when">AGO 2023 — DEZ 2026</div>
-          <div class="tl-what">Engenharia de Software</div>
-          <div class="tl-where">UniCesumar</div>
-        </div>
-        <div class="tl-item">
-          <div class="tl-when">JAN 2024 — JUN 2026</div>
-          <div class="tl-what">Análise e Desenvolvimento de Sistemas</div>
-          <div class="tl-where">UniCesumar</div>
-        </div>
-        <div class="tl-item">
-          <div class="tl-when">JAN 2022 — DEZ 2026</div>
-          <div class="tl-what">Engenharia Mecânica</div>
-          <div class="tl-where">Universidade Ceuma</div>
-        </div>
+    <div class="edu-grid">
+      <div class="edu-card reveal">
+        <div class="when">Ago 2023 — Dez 2026</div>
+        <h3>Engenharia de Software</h3>
+        <p>UniCesumar</p>
+      </div>
+      <div class="edu-card reveal">
+        <div class="when">Jan 2024 — Jun 2026</div>
+        <h3>Análise e Desenvolvimento de Sistemas</h3>
+        <p>UniCesumar</p>
+      </div>
+      <div class="edu-card reveal">
+        <div class="when">Jan 2022 — Dez 2026</div>
+        <h3>Engenharia Mecânica</h3>
+        <p>Universidade Ceuma</p>
       </div>
     </div>
   </div>
 </section>
 
-<section id="projetos">
+<section class="dark-sec" id="projetos">
   <div class="wrap">
-    <div class="section-head">
-      <div class="section-label">04 — PROJETOS</div>
-      <div class="section-title">O que está no ar</div>
+    <div class="head-block reveal">
+      <div class="kicker">Projetos</div>
+      <h2>O que está no ar.</h2>
     </div>
-    <div class="projects">
-      <a class="project" href="https://github.com/Geovannehh/Geovannehh" target="_blank" rel="noopener">
-        <span class="corner"></span>
-        <span class="tag">EM CONSTRUÇÃO</span>
+    <div class="proj-grid">
+      <a class="proj-card reveal" href="https://github.com/Geovannehh/Geovannehh" target="_blank" rel="noopener">
+        <div class="tag">EM CONSTRUÇÃO</div>
         <h3>Perfil GitHub animado</h3>
-        <p>README do perfil com banner estilo terminal, cartões de estatísticas e cobra de contribuições — montado a partir de um master prompt próprio.</p>
-        <span class="go">github.com/Geovannehh ↗</span>
+        <p>README do perfil com banner estilo terminal, cartões de estatísticas e cobra de contribuições, montado a partir de um master prompt próprio.</p>
+        <span class="link-more go">Ver no GitHub <span class="chev">›</span></span>
       </a>
-      <a class="project" href="https://github.com/Geovannehh/Portfolio" target="_blank" rel="noopener">
-        <span class="corner"></span>
-        <span class="tag">2022</span>
+      <a class="proj-card reveal" href="https://github.com/Geovannehh/Portfolio" target="_blank" rel="noopener">
+        <div class="tag">2022</div>
         <h3>Portfolio</h3>
         <p>Primeira versão do portfólio pessoal — HTML e CSS, o ponto de partida antes desta versão.</p>
-        <span class="go">github.com/Geovannehh/Portfolio ↗</span>
+        <span class="link-more go">Ver no GitHub <span class="chev">›</span></span>
       </a>
-      <a class="project" href="https://geovannehh.github.io/Web-Developer-Geovane/" target="_blank" rel="noopener">
-        <span class="corner"></span>
-        <span class="tag">SITE</span>
+      <a class="proj-card reveal" href="https://geovannehh.github.io/Web-Developer-Geovane/" target="_blank" rel="noopener">
+        <div class="tag">SITE</div>
         <h3>Web-Developer-Geovane</h3>
         <p>Página publicada com GitHub Pages, usada como portfólio de referência nos perfis do GitHub e da Rocketseat.</p>
-        <span class="go">geovannehh.github.io ↗</span>
+        <span class="link-more go">Abrir site <span class="chev">›</span></span>
       </a>
     </div>
-    <div class="stats-strip">
-      <div class="stat"><b>29</b><span>REPOSITÓRIOS</span></div>
-      <div class="stat"><b>27</b><span>SEGUIDORES</span></div>
-      <div class="stat"><b>16</b><span>ESTRELAS RECEBIDAS</span></div>
-      <div class="stat"><b>Pull Shark</b><span>CONQUISTA GITHUB</span></div>
+  </div>
+</section>
+
+<section class="light">
+  <div class="wrap">
+    <div class="head-block reveal">
+      <div class="kicker">GitHub</div>
+      <h2>Em números.</h2>
+    </div>
+    <div class="num-grid">
+      <div class="reveal"><div class="n">29</div><div class="l">Repositórios</div></div>
+      <div class="reveal"><div class="n">27</div><div class="l">Seguidores</div></div>
+      <div class="reveal"><div class="n">16</div><div class="l">Estrelas recebidas</div></div>
+      <div class="reveal"><div class="n">🦈</div><div class="l">Conquista Pull Shark</div></div>
     </div>
   </div>
 </section>
 
 <footer id="contato">
   <div class="wrap">
-    <div class="section-label" style="margin-bottom:1rem;">05 — CONTATO</div>
-    <h2 class="contact-head">Vamos construir algo incrível.</h2>
-    <div class="contact-links">
-      <a href="https://github.com/Geovannehh" target="_blank" rel="noopener"><span>GitHub</span><span class="arrow">↗</span></a>
-      <a href="https://www.linkedin.com/in/geovane-paix%C3%A3o" target="_blank" rel="noopener"><span>LinkedIn</span><span class="arrow">↗</span></a>
-      <a href="https://app.rocketseat.com.br/me/geovane-paixao" target="_blank" rel="noopener"><span>Rocketseat</span><span class="arrow">↗</span></a>
-      <a href="https://www.instagram.com/geovanneps/" target="_blank" rel="noopener"><span>Instagram</span><span class="arrow">↗</span></a>
-      <a href="https://x.com/GeovanePaixao5" target="_blank" rel="noopener"><span>X (Twitter)</span><span class="arrow">↗</span></a>
-      <a href="https://geovannehh.github.io/Web-Developer-Geovane/" target="_blank" rel="noopener"><span>Site anterior</span><span class="arrow">↗</span></a>
+    <div class="foot-top">
+      <div>
+        <div style="color:#fff;font-size:1.4rem;font-weight:600;margin-bottom:.5rem;">Vamos construir algo incrível.</div>
+        <div>São Luís — Maranhão — Brasil</div>
+      </div>
+      <div class="foot-links">
+        <a href="https://github.com/Geovannehh" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/geovane-paix%C3%A3o" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://app.rocketseat.com.br/me/geovane-paixao" target="_blank" rel="noopener">Rocketseat</a>
+        <a href="https://www.instagram.com/geovanneps/" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://x.com/GeovanePaixao5" target="_blank" rel="noopener">X</a>
+      </div>
     </div>
-    <div class="foot-note">
-      <span>SÃO LUÍS — MA — BRASIL</span>
-      <span>© 2026 GEOVANE PAIXÃO</span>
+    <div class="foot-bottom">
+      <span>© 2026 Geovane Paixão</span>
+      <span>Feito com HTML, CSS e JavaScript</span>
     </div>
   </div>
 </footer>
+
+<script>
+  var els = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.15 });
+    els.forEach(function(el) { io.observe(el); });
+  } else {
+    els.forEach(function(el) { el.classList.add('in'); });
+  }
+</script>
 
 </body>
 </html>
