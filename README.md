@@ -14,7 +14,7 @@ Nos meus projetos, busco unir **programação, automação, IoT, inteligência a
 
 Entre meus projetos e áreas de interesse estão **HydrogenI / BoxTwin, automação industrial, IoT, ESP32, Raspberry Pi, sistemas de monitoramento, dashboards, prototipagem, robótica e desenvolvimento web**.
 
-Este portfólio representa essa evolução: de desenvolvedor para alguém capaz de conectar **software + hardware + engenharia + inovação**.
+Este portfólio representa minha evolução: de desenvolvedor para alguém capaz de conectar **software + hardware + engenharia + inovação**.
 
 **Building. Learning. Shipping.**
 
