@@ -23,6 +23,6 @@ Este portfólio representa minha evolução: De desenvolvedor para alguém capaz
 **Building. Learning. Shipping.**
 
 Sempre buscando transformar uma ideia em algo que possa ser construído, testado e melhorado.
-<img width="1511" height="1687" alt="DIAGRAMA" src="https://github.com/user-attachments/assets/74832143-658b-42ea-a279-be00688f4972" />
+<img width="800" height="500" alt="DIAGRAMA" src="https://github.com/user-attachments/assets/74832143-658b-42ea-a279-be00688f4972" />
 
 
