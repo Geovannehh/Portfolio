@@ -22,9 +22,9 @@ Entre meus projetos e áreas de interesse estão **HydrogenI / BoxTwin, automaç
 Este portfólio representa minha evolução: De desenvolvedor para alguém capaz de conectar **software + hardware + engenharia + inovação**.
 
 **Building. Learning. Shipping.**
-<img width="1376" height="768" alt="geovane-paixao-banner (1)" src="https://github.com/user-attachments/assets/9e0f7f4b-c111-4540-b24d-e6ec5f66b428" />
+<img width="1376" height="500" alt="geovane-paixao-banner (1)" src="https://github.com/user-attachments/assets/9e0f7f4b-c111-4540-b24d-e6ec5f66b428" />
 
 Sempre buscando transformar uma ideia em algo que possa ser construído, testado e melhorado.
-<img width="800" height="500" alt="DIAGRAMA" src="https://github.com/user-attachments/assets/74832143-658b-42ea-a279-be00688f4972" />
+<img width="1376" height="500" alt="DIAGRAMA" src="https://github.com/user-attachments/assets/74832143-658b-42ea-a279-be00688f4972" />
 
 
